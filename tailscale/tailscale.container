@@ -1,0 +1,19 @@
+# tailscale.container
+[Unit]
+Description=VPN
+Wants=network-online.target
+After=network-online.target
+After=local-fs.target
+
+[Container]
+AddCapability=net_admin net_raw
+ContainerName=tailscaled
+Environment=TS_STATE_DIR=/var/lib/tailscale TS_HOSTNAME=example.com TS_AUTHKEY=tskey-auth-...
+Image=tailscale/tailscale:latest
+AutoUpdate=registry
+Network=host
+Volume=./data:/var/lib/tailscale
+Volume=/dev/net/tun:/dev/net/tun
+
+[Service]
+Restart=always
